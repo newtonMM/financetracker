@@ -2,75 +2,84 @@ const account = require('../models/account');
 const User = require('../models/user');
 const Usercontrol = require('./user');
 
-const accountcontrol = {
+const AccountControl = {
 
 
-    createincome: (req, res) => {
-        var income = new income();
+    createAccount: (req, res) => {
+        var account = new account();
         account.Income.salary = req.body.salary;
         account.Income.recurring = req.body.recurringincome;
         account.Income.other = req.body.otherincome;
-        account.Income.save(() => {
+        account.taxrate = req.body.taxrate;
+        const Tax = (taxrate * salary);
+        if (err) {
+            return res.status(500).json(err);
+        }
+        return Tax;
+
+        account.save(() => {
             if (err) {
                 return res.status(500).json({ message: 'unable to save income details' });
 
             } else {
-                return res.status(200).json(Income);
+                return res.status(200).json(account);
             }
 
         });
     },
 
-    createexpenses: (req, res) => {
-        var expenses = new expenses();
-        account.expenses.daily = req.body.dailyexpenses;
-        account.expenses.dailyamount = req.body.dailyamount;
-        account.expenses.weekly = req.body.weeklyexpenses;
-        account.expenses.weeklyamount = req.body.weeklyamount;
-        account.expenses.monthly = req.body.monthlyexpenses;
-        account.expenses.annual = req.body.annualexpenses;
-        account.expenses.annualamount = req.body.annualamount;
+    updateAccount: (req, res) => {
+        account.findById(account.params.account_id, (err, acccount) => {
+            if (err || !expenses) {
+                return res.status(404).json(err);
+            }
+            account.Income.salary = req.body.salary;
+            account.Income.recurring = req.body.recurringIncome;
+            account.Income.other = req.body.otherIncome;
+            account.taxrate = req.body.taxrate;
+            
+            account.save(() => {
+                if (err) {
+                    return res.status(500).json({ message: 'unable to update expenses details' });
+                } else {
+                    return res.status(200).json(account);
+                }
+            });
 
-        account.expenses.save(() => {
+
+
+        });
+    },
+
+    deleteAccount: (req, res) => {
+        account.remove({ _id: req.params.expenses_id, }, (err, expenses) => {
             if (err) {
-                return res.status(500).json({ message: 'unable to save expenses details' });
-            } else {
-                return res.status(200).json(expenses);
+                return res.status(500).json(err);
+
             }
+            return res.json(expenses);
+
         });
+
+
     },
-    createBills: (req, res) => {
-        var Bills = new Bill();
-        account.Bills.billtype = req.body.type;
-        account.Bill.amount = req.body.amount;
-        account.Bill.duedate = req.body.duedate;
-        account.Bills.save(() => {
-            if (err) {
-                return res.status(500).json(err)
-            } else {
-                return res.status(200).json(Bills)
-
+    
+  
+    getAcccountBalance: (req, res) => {
+        account.findById(req.params.account_id, (err, salary, recurringIncome, otherIncome, Tax) => {
+            if (err || !account) {
+                return res.status(404).json(err);
             }
-        });
-    },
+            const AccountBalance = (salary + recurringIncome + otherIncome - Tax);
+            return AccountBalance;
 
-    createDebts: (req, res) => {
-        var Debts = new Debts();
-        account.Debts.lender = req.body.lender;
-        account.Debts.amount = req.body.amounts;
-        account.Debts.duedate = req.body.duedate;
-
-        account.debts.save(() => {
-            if (err) {
-                return res.status(500).json(err)
-            } else {
-                return res.status(200).json(Debts)
-            }
         });
     },
 
+
+    
 
 
 };
 
-module.exports = accountcontrol;
+module.exports = AccountControl;

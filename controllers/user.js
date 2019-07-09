@@ -77,7 +77,7 @@ const Usercontrol = {
         });
 
     },
-    deleteuser: (req, res) => {
+    deleteUser: (req, res) => {
         User.remove({ _id: req.params.User_id, }, (err, user) => {
             if (err) {
                 return res.status(500).json(err);
