@@ -31,7 +31,6 @@ const ExpensesControl = {
             expenses.monthly = req.body.monthlyexpenses;
             expenses.annual = req.body.annualexpenses;
             expenses.annualamount = req.body.annualamount;
-
             expenses.save(() => {
                 if (err) {
                     return res.status(500).json({ message: 'unable to update expenses details' });
@@ -39,25 +38,15 @@ const ExpensesControl = {
                     return res.status(200).json(expenses);
                 }
             });
-
-
-
         });
     },
-
     deleteExpenses: (req, res) => {
         expenses.remove({ _id: req.params.expenses_id, }, (err, expenses) => {
             if (err) {
                 return res.status(500).json(err);
-
             }
             return res.json(expenses);
-
         });
-
-
     },
-
-
 };
     module.exports = ExpensesControl;

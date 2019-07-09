@@ -3,8 +3,6 @@ const User = require('../models/user');
 const Usercontrol = require('./user');
 
 const AccountControl = {
-
-
     createAccount: (req, res) => {
         var account = new account();
         account.Income.salary = req.body.salary;
@@ -16,7 +14,6 @@ const AccountControl = {
             return res.status(500).json(err);
         }
         return Tax;
-
         account.save(() => {
             if (err) {
                 return res.status(500).json({ message: 'unable to save income details' });
@@ -24,10 +21,9 @@ const AccountControl = {
             } else {
                 return res.status(200).json(account);
             }
-
         });
     },
-
+    // update account details
     updateAccount: (req, res) => {
         account.findById(account.params.account_id, (err, acccount) => {
             if (err || !expenses) {
@@ -45,26 +41,17 @@ const AccountControl = {
                     return res.status(200).json(account);
                 }
             });
-
-
-
         });
     },
-
     deleteAccount: (req, res) => {
         account.remove({ _id: req.params.expenses_id, }, (err, expenses) => {
             if (err) {
                 return res.status(500).json(err);
-
             }
             return res.json(expenses);
-
         });
-
-
-    },
-    
-  
+    }, 
+  //to compute the total amount in the account
     getAcccountBalance: (req, res) => {
         account.findById(req.params.account_id, (err, salary, recurringIncome, otherIncome, Tax) => {
             if (err || !account) {
@@ -72,14 +59,8 @@ const AccountControl = {
             }
             const AccountBalance = (salary + recurringIncome + otherIncome - Tax);
             return AccountBalance;
-
         });
     },
-
-
-    
-
-
 };
 
 module.exports = AccountControl;

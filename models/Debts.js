@@ -5,8 +5,6 @@ const DebtsSchema = new Schema({
     lender: String,
     debtamount: Number,
     duedate: Date,
-    
-
-
+   
 });
 module.exports = mongoose.model(Debts, DebtsSchema);

@@ -1,20 +1,20 @@
 const express = require('express');
-const usercontrol = require('../controllers/user');
+const UserControl = require('../controllers/user');
 
 const router = express.Router();
 
 
 router.route('/login')
-    .post(usercontrol.login);
-router.use(Usercontrol.authenticate);
+    .post(UserControl.login);
+router.use(UserControl.authenticate);
 
 router.route('/logout')
-    .post(usercontrol.logout);
+    .post(UserControl.logout);
 router.route('/register')
-    .post(usercontrol.register);
+    .post(UserControl.register);
 router.route('/:UserId')
-    .put(usercontrol.updateUser)
-    .delete(usercontrol.deleteUser);
+    .put(userControl.updateUser)
+    .delete(UserControl.deleteUser);
 
 module.exports = router;
 

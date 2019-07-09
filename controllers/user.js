@@ -3,8 +3,9 @@ const Jwt = require('jwt');
 require('dotenv').load();
 
 
-const Usercontrol = {
-    aunthenticate: (req, res, next) => {
+const UserControl = {
+    // verify token generated 
+    authenticate: (req, res, next) => {
         const token = req.body.token || req.query.token || req.headers['x-acess-token'];
         if (!token)
             return res.status(403).json({ auth: false, message: 'no token provided ' });
@@ -16,22 +17,12 @@ const Usercontrol = {
 
         });
 
-
-
-
-
-
     },
-
-
+    //posting details of the user
     register: (req, res) => {
-
-        User.find({ email: req.body.email }, (err, user) => {
-
+        User.find({ email: req.body.email }, (err, User) => {
             if (!user) {
-
                 const User = new User();
-
                 User.name.first = req.body.Firstname;
                 User.name.middle = req.body.Middlename;
                 User.name.Last = req.body.Lastname;
@@ -40,16 +31,15 @@ const Usercontrol = {
                 User.email = req.body.email;
                 User.password = generateHash(req.body.password);
 
-                user.save(() => {
+                User.save(() => {
                     if (err) {
                         return res.status(500).json(err);
                     } else {
-                        return res.status(200).json(user);
+                        return res.status(200).json(User);
                     }
                 });
             } else {
                 res.status(400).json({ message: 'failed to register user!' });
-
             }
 
         });
@@ -59,14 +49,13 @@ const Usercontrol = {
     },
 
     login: (req, res) => {
-        User.find({ email: req.body.email }, (err, user) => {
+        User.find({ email: req.body.email }, (err, User) => {
             if (err) {
-                res.status(500).json({ err });
-
-
+                res.status(500).json({ err }
             }
+            // generate token when user request to login
             if (User.ValidPassword(user, req, body.passwword)) {
-                const token = Jwt.sign({ _id: user_id }, config.secret, {
+                const token = Jwt.sign({ _id: User_id }, config.secret, {
                     expiresIn: 86400
                 });
                 return res.status(200).json({ auth: true, token: token });
@@ -78,16 +67,12 @@ const Usercontrol = {
 
     },
     deleteUser: (req, res) => {
-        User.remove({ _id: req.params.User_id, }, (err, user) => {
+        User.remove({ _id: req.params.User_id, }, (err, User) => {
             if (err) {
                 return res.status(500).json(err);
-
             }
-            return res.json(user);
-
+            return res.json(User);
         });
-
-
     },
 
     updateUser: (req, res) => {
@@ -103,19 +88,15 @@ const Usercontrol = {
             User.email = req.body.email;
             User.password = generateHash(req.body.password);
 
-            user.save(() => {
+            User.save(() => {
                 if (err) {
                     return res.status(500).json({ message: 'failed to create user!' });
                 } else {
                     return res.status(200).json(user);
                 }
             });
-
-
         });
-
     },
-
     logout: (req, res) => {
         if (req.token) {
             const token = 0;
@@ -123,24 +104,8 @@ const Usercontrol = {
 
         } return res.status(400);
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 };
-module.exports = Usercontrol;
+module.exports = UserControl;
 
 
 

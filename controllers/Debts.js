@@ -5,7 +5,6 @@ const DebtsControl = {
         Debts.lender = req.body.lender;
         Debts.amount = req.body.amounts;
         Debts.duedate = req.body.duedate;
-
         Debts.save(() => {
             if (err) {
                 return res.status(500).json(err)
