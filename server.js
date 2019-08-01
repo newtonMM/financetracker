@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = require('./routes');
-require(dotenv).load();
+require('dotenv');
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -13,7 +13,7 @@ const port = process.env.PORT || 8000;
 app.use(bodyParser.json());
 app.use(cookieParser(process.env.SECRET));
 
-mongoose.connect('mongodb://localhost/financemanager');
+mongoose.connect('mongodb://localhost/financemanager',{useMongoClient:true});
 
 router(app);
 
