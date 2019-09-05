@@ -4,7 +4,7 @@
   "description": "tracker user finance spendings",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon --exec babel-node -- server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "pretest": "node seeder/seeds.js"
   },
@@ -20,17 +20,30 @@
   "homepage": "https://github.com/newtonMM/finance_tracker#readme",
   "dependencies": {
     "async": "^2.6.3",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^10.0.3",
+    "babel-preset-env": "^1.7.0",
     "bcrypt": "^3.0.6",
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.5",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose-seeder": "^1.2.1",
+    "morgan": "^1.9.1",
     "req-flash": "0.0.3"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2"
   }
 }
