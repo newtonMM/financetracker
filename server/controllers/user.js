@@ -1,5 +1,5 @@
-const User = require('./../models/user');
-const Jwt = require('jsonwebtoken');
+import User from './../models/user';
+import Jwt from 'jsonwebtoken';
 require('dotenv');
 
 
@@ -20,45 +20,43 @@ const userControl = {
     },
     //posting details of the user
     register: (req, res) => {
-        User.find({ email: req.body.email }, (err, users) => {
-            if (!users.length) {
+        User.findOne({ email: req.body.email }, (err, users) => {
+            
+            if (!users) {
                 const user = new User();
                 user.name.first = req.body.FirstName;
                 user.name.middle = req.body.MiddleName;
-                user.name.Last = req.body.LastName;
+                user.name.last = req.body.LastName;
                 user.occupation = req.body.occupation;
                 user.gender = req.body.gender;
                 user.email = req.body.email;
-                user.password = generateHash(req.body.password);
-                user.save(() => {
-                    if (err) {
-                        return res.status(500).json(err);
-                    } else {
-                        return res.status(200).json(user);
-                    }
-                });
+                user.password = user.generateHash(req.body.password);
+                user.save().then(userRecord => {
+                    res.json({ user: userRecord.toUserJSON() });
+                  })
             } else {
-                res.status(400).json({ message: 'failed to register user!' });
+                res.status(400).json({ message: 'User already exist!' });
             }
         });
-        req.flash('success_msg', 'You are registerd and can now login');
-        res.redirect('/users/login');
+        // req.flash('success_msg', 'You are registerd and can now login');
+        // res.redirect('/users/login');
 
     },
 
     login: (req, res) => {
-        User.find({ email: req.body.email }, (err, user) => {
+        User.findOne({ email: req.body.email }, (err, user) => {
+
             if (err) {
                 res.status(500).json({ err });
             }
             // generate token when user request to login
-            if (user.ValidPassword(user, req, body.passwword)) {
-                const token = Jwt.sign({ _id: user_id }, config.secret, {
+            if (user.validPassword(user, req.body.password)) {
+                const token = Jwt.sign({ _id: user._id }, 'secret', {
                     expiresIn: 86400
                 });
                 return res.status(200).json({ auth: true, token: token });
             } else {
-                return res.status(400).json({ message: 'error loging in' });
+                return res.status(400).json({ message: 'Invalid email or password' });
             }
 
         });
